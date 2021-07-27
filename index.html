@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<meta charset="utf-8" />
+<html>
+	<head>
+		<title>Riichi Mahjong - Game Recorder</title>
+		<link rel="stylesheet" href="style.css">
+	</head>
+	<body>
+    <noscript>
+    Please enable Javascript on this page.<br>
+    </noscript>
+		<table class="table">
+			<tr height="33%">
+				<td align="left" valign="top">
+					<div id="resetBtn" class="button center" style="margin-bottom:0.2em" onclick="resetBtnClicked()">Reset</div>
+					<div id="rollbackBtn" class="button center" onclick="rollbackBtnClicked()">倒回一局</div>
+				</td>
+				<td>
+					<div id="playerTop" class="player center">
+						<table>
+							<tr><td style="vertical-align: bottom;">
+								<div class="container">
+									<div id="topWind" class="inline">西</div>
+									<div id="topScore" class="inline score">25000</div>
+								</div>
+							</td></tr>
+							<tr><td style="vertical-align: top;">
+								<div class="container">
+									<div id="scoreChangeTop" class="inline strong hidden scoreChange">
+									</div>
+									<div id="topRiichiBtn" onclick = "riichiClicked(0)" class="inline button">リーチ</div>
+								</div>
+							</td></tr>
+						</table>
+					</div>
+				</td>
+				<td align="right" valign="top">
+					<div id="settingBtn" class="button center" onclick = "settingClicked()">Setting</div>
+				</td>
+			</tr>
+			<tr height="33%">
+				<td>
+					<div id="playerLeft" class="player center">
+						<table>
+							<tr><td style="vertical-align: bottom;">
+								<div class="container">
+									<div id="leftWind" class="inline">北</div>
+									<div id="leftScore" class="inline score">25000</div>
+								</div>
+							</td></tr>
+							<tr><td style="vertical-align: top;">
+								<div class="container">
+									<div id="scoreChangeLeft" class="inline strong hidden scoreChange">
+									</div>
+									<div id="leftRiichiBtn" onclick = "riichiClicked(1)" class="inline button">リーチ</div>
+								</div>
+							</td></tr>
+						</table>
+					</div>
+				</td>
+				<td>
+					<div id="gameInfo" class="indicator center">
+						<table>
+							<tr><td>
+								<div class="container">
+									<div id="windInfo" class="">東一局<br>2本場</div>
+									<div id="riichiAmount" class=""></div>
+									<div id="okBtn" class="button inline strong enlarge hidden" onclick = "okBtnClicked()">✔OK</div>
+								</div>
+							</td></tr>
+						</table>
+					</div>
+				</td>
+				<td>
+					<div id="playerRight" class="player center">
+						<table>
+							<tr><td style="vertical-align: bottom;">
+								<div class="container">
+									<div id="rightWind" class="inline">南</div>
+									<div id="rightScore" class="inline score">25000</div>
+								</div>
+							</td></tr>
+							<tr><td style="vertical-align: top;">
+								<div class="container">
+									<div id="scoreChangeRight" class="inline strong hidden scoreChange">
+									</div>
+									<div id="rightRiichiBtn" onclick = "riichiClicked(3)" class="inline button">リーチ</div>
+								</div>
+							</td></tr>
+						</table>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td align="left" valign="bottom">
+					<table>
+						<tr><td valign="bottom" style="line-height:2.2em;">
+							<div id="tsumoBtn" class="button center inline strong enlarge" onclick = "tsumoClicked()">ツモ</div>
+							<div id="ronBtn" class="button center inline strong enlarge" onclick = "ronClicked()" >ロン</div>
+						</td></tr>
+						<tr><td valign="top" style="line-height:2.2em;">
+							<div id="nagashiBtn" class="button center inline strong enlarge" onclick = "nagashiClicked()" >流局</div>
+							<div id="specialBtn" class="button center inline strong enlarge" onclick = "specialClicked()" >特殊</div>
+						</td></tr>
+					</table>
+				</td>
+				<td>
+					<div id="playerBottom" class="player center">
+						<table>
+							<tr><td style="vertical-align: bottom;">
+								<div class="container">
+									<div id="bottomWind" class="inline">東</div>
+									<div id="bottomScore" class="inline score">25000</div>
+								</div>
+							</td></tr>
+							<tr><td style="vertical-align: top;">
+								<div class="container">
+									<div id="scoreChangeBottom" class="inline strong hidden scoreChange">
+									</div>
+									<div id="bottomRiichiBtn" onclick = "riichiClicked(2)" class="inline button">リーチ</div>
+								</div>
+							</td></tr>
+						</table>
+					</div>
+				</td>
+				<td align="right" valign="bottom">
+					<div id="detailBtn" class="button center" onclick = "detailBtnClicked()">Detail</div>
+			</tr>
+		</table>
+		<div id="mask1" class="mask fixed hidden">
+			<div id="calcScorePanel" class="hidden container">
+				<div id="selectTsumoer" class="choices hidden">誰<strong>自摸</strong>？
+					<div id="leftTsumoBtn" onclick ="selectTsumoer(1)" class="button subchoices selectWho">←</div>
+					<div id="topTsumoBtn" onclick ="selectTsumoer(0)" class="button subchoices selectWho">↑</div>
+					<div id="bottomTsumoBtn" onclick ="selectTsumoer(2)" class="button subchoices selectWho">↓</div>
+					<div id="rightTsumoBtn" onclick ="selectTsumoer(3)" class="button subchoices selectWho">→</div>
+				</div>
+				<div id="selectRoner" class="choices hidden">誰<strong>榮和</strong>？
+					<div id="leftRonBtn" onclick ="selectRoner(1)" class="button subchoices selectWho">←</div>
+					<div id="topRonBtn" onclick ="selectRoner(0)" class="button subchoices selectWho">↑</div>
+					<div id="bottomRonBtn" onclick ="selectRoner(2)" class="button subchoices selectWho">↓</div>
+					<div id="rightRonBtn" onclick ="selectRoner(3)" class="button subchoices selectWho">→</div>
+				</div>
+				<div id="selectChucker" class="choices hidden">誰放銃？
+					<div id="leftChuckBtn" onclick ="selectChucker(1)" class="button subchoices selectWho">←</div>
+					<div id="topChuckBtn" onclick ="selectChucker(0)" class="button subchoices selectWho">↑</div>
+					<div id="bottomChuckBtn" onclick ="selectChucker(2)" class="button subchoices selectWho">↓</div>
+					<div id="rightChuckBtn" onclick ="selectChucker(3)" class="button subchoices selectWho">→</div>
+				</div>
+				<div id="selectNagashiType" class="choices hidden">
+					<div id="normalNagashiBtn" onclick ="selectNagashiType(0)" class="button subchoices">正常流局</div>
+					<div id="earlyNagashiBtn" onclick ="selectNagashiType(1)" class="button subchoices">途中流局</div>
+					<div id="manganNagashiBtn" onclick ="selectNagashiType(2)" class="button subchoices">流局滿貫</div>
+				</div>
+				<div id="selectNagashiListener" class="choices hidden">誰聽牌？
+					<div id="leftListenBtn" onclick ="selectNagashiListener(1)" class="button subchoices selectWho">←</div>
+					<div id="topListenBtn" onclick ="selectNagashiListener(0)" class="button subchoices selectWho">↑</div>
+					<div id="bottomListenBtn" onclick ="selectNagashiListener(2)" class="button subchoices selectWho">↓</div>
+					<div id="rightListenBtn" onclick ="selectNagashiListener(3)" class="button subchoices selectWho">→</div>
+				</div>
+				<div id="selectNagashiManganer" class="choices hidden">流局滿貫
+					<div id="leftNagashiManganBtn" onclick ="selectNagashiManganer(1)" class="button subchoices selectWho">←</div>
+					<div id="topNagashiManganBtn" onclick ="selectNagashiManganer(0)" class="button subchoices selectWho">↑</div>
+					<div id="bottomNagashiManganBtn" onclick ="selectNagashiManganer(2)" class="button subchoices selectWho">↓</div>
+					<div id="rightNagashiManganBtn" onclick ="selectNagashiManganer(3)" class="button subchoices selectWho">→</div>
+				</div>
+				<div id="selectNagashiEarlyFinishType" class="choices hidden">哪種途中流局？<br>
+					<div id="earlyNagashiNightTails" onclick ="selectNagashiEarlyType(0)" class="button subchoices">九種九牌</div>
+					<div id="earlyNagashiFourRiichis" onclick ="selectNagashiEarlyType(1)" class="button subchoices">四家立直</div>
+					<div id="earlyNagashiThreeRons" onclick ="selectNagashiEarlyType(2)" class="button subchoices">三家和了</div>
+					<div id="earlyNagashiFourKangs" onclick ="selectNagashiEarlyType(3)" class="button subchoices">四槓散了</div>
+					<div id="earlyNagashiFourWinds" onclick ="selectNagashiEarlyType(4)" class="button subchoices">四風連打</div>
+				</div>
+				<div id="selectTsumoScore" class="choices hidden">
+					<input id="fan" type="number" value="4" min="1" class="adjustFanFuAmount" onfocus="this.select()" onblur="adjustFanAmount(this)"/>飜<input id="fu" type="number" value="30" min="20" max="170" step="10" class="adjustFanFuAmount" onfocus="this.select()" onblur="adjustFuAmount(this)"/>符  <div id="scoreResult" class="inline strong"></div>
+				</div>
+				<div id="selectTopScore" class="choices hidden"><div class="indicator">↑</div>
+					<input id="topFan" type="number" value="4" min="1" class="adjustFanFuAmount" onfocus="this.select()" onblur="adjustFanAmount(this)"/>飜<input id="topFu" type="number" value="30" min="20" max="170" step="10" class="adjustFanFuAmount" onfocus="this.select()" onblur="adjustFuAmount(this)"/>符  <div id="topScoreResult" class="inline strong"></div>
+				</div>
+				<div id="selectLeftScore" class="choices hidden"><div class="indicator">←</div>
+					<input id="leftFan" type="number" value="4" min="1" class="adjustFanFuAmount" onfocus="this.select()" onblur="adjustFanAmount(this)"/>飜<input id="leftFu" type="number" value="30" min="20" max="170" step="10" class="adjustFanFuAmount" onfocus="this.select()" onblur="adjustFuAmount(this)"/>符  <div id="leftScoreResult" class="inline strong"></div>
+				</div>
+				<div id="selectBottomScore" class="choices hidden"><div class="indicator">↓</div>
+					<input id="bottomFan" type="number" value="4" min="1" class="adjustFanFuAmount" onfocus="this.select()" onblur="adjustFanAmount(this)"/>飜<input id="bottomFu" type="number" value="30" min="20" max="170" step="10" class="adjustFanFuAmount" onfocus="this.select()" onblur="adjustFuAmount(this)""/>符  <div id="bottomScoreResult" class="inline strong"></div>
+				</div>
+				<div id="selectRightScore" class="choices hidden"><div class="indicator">→</div>
+					<input id="rightFan" type="number" value="4" min="1" class="adjustFanFuAmount" onfocus="this.select()" onblur="adjustFanAmount(this)"/>飜<input id="rightFu" type="number" value="30" min="20" max="170" step="10" class="adjustFanFuAmount" onfocus="this.select()" onblur="adjustFuAmount(this)"/>符  <div id="rightScoreResult" class="inline strong"></div>
+				</div>
+				<div id="selectSpecialType" class="choices hidden">
+					<div id="reduceSpecialBtn" onclick ="selectSpecialType(0)" class="button subchoices">罰供託</div>
+					<div id="wrongRonSpecialBtn" onclick ="selectSpecialType(1)" class="button subchoices">錯和</div>
+				</div>
+				<div id="selectReducedPlayer" class="choices hidden">誰要被罰？
+					<div id="leftReducedBtn" onclick ="selectReducedPlayer(1)" class="button subchoices selectWho">←</div>
+					<div id="topReducedBtn" onclick ="selectReducedPlayer(0)" class="button subchoices selectWho">↑</div>
+					<div id="bottomReducedBtn" onclick ="selectReducedPlayer(2)" class="button subchoices selectWho">↓</div>
+					<div id="rightReducedBtn" onclick ="selectReducedPlayer(3)" class="button subchoices selectWho">→</div>
+				</div>
+				<div id="selectWrongRonPlayer" class="choices hidden">誰錯和了？
+					<div id="leftWrongRonBtn" onclick ="selectWrongRonPlayer(1)" class="button subchoices selectWho">←</div>
+					<div id="topWrongRonBtn" onclick ="selectWrongRonPlayer(0)" class="button subchoices selectWho">↑</div>
+					<div id="bottomWrongRonBtn" onclick ="selectWrongRonPlayer(2)" class="button subchoices selectWho">↓</div>
+					<div id="rightWrongRonBtn" onclick ="selectWrongRonPlayer(3)" class="button subchoices selectWho">→</div>
+				</div>
+
+				<div id="cancelBtn" class="inline button strong enlarge" onclick="cancelBtnClicked()">✕取消</div>
+				<div id="confirmBtn" class="inline button strong enlarge" onclick="confirmBtnClicked()">✔確認</div>
+			</div>
+			<div id="returnBtn" class="inline button hidden strong" onclick="returnBtnClicked()" style="padding:0 0.2em;"><<返回</div>
+			<div id="detailPanel" class="detail hidden">
+			</div>
+			<div id="settingPanel" class="setting hidden">
+				<div class="container">
+					<div id="closeSettingBtn" class="button strong" style="border=1px solid white;position:fixed;top:0.5em;right:1em;padding:0.2em;width:auto;z-index:10;" onclick="closeSettingBtnClicked()">✕關閉</div>
+					<div style="text-align:left">※更改選項會重新開始牌局※</div>
+					<div class="choices">
+						起家
+						<div class="settingChoices">
+							<input type="radio" name="pickStarter" onclick="setStartDealer(this, 4)" checked>↑
+						</div>
+						<div class="settingChoices">
+							<input type="radio" name="pickStarter" onclick="setStartDealer(this, 5)">←
+						</div>
+						<div class="settingChoices">
+							<input type="radio" name="pickStarter" onclick="setStartDealer(this, 6)">↓
+						</div>
+						<div class="settingChoices">
+							<input type="radio" name="pickStarter" onclick="setStartDealer(this, 7)">→
+						</div>
+					</div>
+					<div class="choices">
+						<div class="settingChoices">
+							<input type="radio" name="gameAmount" onclick="setGameAmount(this, 4)">東風戰
+						</div>
+						<div class="settingChoices">
+							<input type="radio" name="gameAmount" onclick="setGameAmount(this, 8)" checked>半莊戰
+						</div>
+					</div>
+					<div class="choices">計點方式
+						<div class="settingChoices">
+							<input type="radio" name="calcScoreRule" onclick="setCalcScoreRule(this, 0)" checked>通常
+						</div>
+						<div class="settingChoices">
+							<input type="radio" name="calcScoreRule" onclick="setCalcScoreRule(this, 1)" >青天井
+						</div>
+						<hr>
+					</div>
+					<div class="choices">
+						<div class="settingChoices">
+							<input id="startPt" type="number" style="width:4em;height:1.5em;" value="25000" step="100" min="0" oninput = "setScoreToBeginWith(this.value, -1)" onfocus="this.select()" onblur = "adjustScoreToBeginWith(this,-1)">起
+						</div>
+						<div class="settingChoices">
+							<input id="standardScore" type="number" style="width:4em;height:1.5em;" value="30000" step="100" min="0" oninput = "setStandardScore(this.value)" onfocus="this.select()" onblur = "adjustStandardScore(this)">返
+						</div>
+						<div class="settingChoices">
+							本場點<input id="bonusPtPerGame" type="number" style="width:3em;height:1.5em;" value="300" step="300" min="0" onfocus="this.select()" oninput = "setBonusPtPerGame(this.value)" onblur="adjustBonusPtPerGame(this)">
+						</div>
+					</div>
+					<div class="choices">
+						<div class="settingChoices">
+							<input id="scoreToBeginWithDifferent" type="checkbox" onclick="setScoreToBeginWithDifferent(this)" class="chkbox">手動設定起始點數
+						</div>
+						<div class="settingChoices">
+							↑<input id="scoreToBeginWithTop" type="number" style="width:4em;height:1.5em;" value="25000" step="100" min="0" oninput = "setScoreToBeginWith(this.value, 0)" onfocus="this.select()" onblur = "adjustScoreToBeginWith(this, 0)" disabled>
+						</div>
+						<div class="settingChoices">
+							←<input id="scoreToBeginWithLeft" type="number" style="width:4em;height:1.5em;" value="25000" step="100" min="0" oninput = "setScoreToBeginWith(this.value, 1)" onfocus="this.select()" onblur = "adjustScoreToBeginWith(this, 1)" disabled>
+						</div>
+						<div class="settingChoices">
+							↓<input id="scoreToBeginWithBottom" type="number" style="width:4em;height:1.5em;" value="25000" step="100" min="0" oninput = "setScoreToBeginWith(this.value, 2)" onfocus="this.select()" onblur = "adjustScoreToBeginWith(this, 2)" disabled>
+						</div>
+						<div class="settingChoices">
+							→<input id="scoreToBeginWithRight" type="number" style="width:4em;height:1.5em;" value="25000" step="100" min="0" oninput = "setScoreToBeginWith(this.value, 3)" onfocus="this.select()" onblur = "adjustScoreToBeginWith(this, 3)" disabled>
+						</div>
+					</div>
+					<div class="choices">
+						<div class="settingChoices">
+							<input id="addExtraGames" type="checkbox" onclick="setAddExtraGames(this)" class="chkbox" checked>南/西入(+4局)
+						</div>
+						<div class="settingChoices">
+							沒人到<input id="endRequiredPt" type="number" style="width:4em;height:1.5em;" value="30000" step="100" min="0" oninput = "setScoreRequiredToEnd(this.value)" onfocus="this.select()" onblur = "adjustScoreRequiredToEnd(this)">續行
+						</div>
+					</div>
+					<div class="choices">
+						<div class="settingChoices">
+							<input id="winEnoughFinishEarly" type="checkbox" onclick="setWinEnoughFinishEarly(this)" class="chkbox">有人達到<input id="scoreRequiredToFinishEarly" type="number" style="width:4em;height:1.5em;" value="50000" step="100" min="0" oninput = "setScoreRequiredToFinishEarly(this.value)" onfocus="this.select()" onblur = "adjustScoreRequiredToFinishEarly(this)">時提早結束
+						<div class="settingChoices">
+						<div id="resetToDefaultPts" class="subchoices button" onclick="resetBasicPoints()" style="font-size:1em;border:1px solid white">預設</div>
+					</div>
+					<hr>
+					<div class="choices">名次補正
+						<div class="settingChoices">
+							1位<input id="scoreAdjustTop" type="number" style="width:2em;height:1.5em;" value="20" step="1" onfocus="this.select()" oninput = "setScoreAdjustAmount(this, 0)" disabled>
+						</div>
+						<div class="settingChoices">
+							2位<input id="scoreAdjustSecond" type="number" style="width:2em;height:1.5em;" value="10" step="1" onfocus="this.select()" oninput = "setScoreAdjustAmount(this, 1)">
+						</div>
+						<div class="settingChoices">
+							3位<input id="scoreAdjustThird" type="number" style="width:2em;height:1.5em;" value="-10" step="1" onfocus="this.select()" oninput = "setScoreAdjustAmount(this, 2)">
+						</div>
+						<div class="settingChoices">
+							4位<input id="scoreAdjustLast" type="number" style="width:2em;height:1.5em;" value="-20" step="1" onfocus="this.select()" oninput = "setScoreAdjustAmount(this, 3)">
+						</div>
+						<div class="settingChoices">
+							<div id="resetToDefaultAdjust" class="subchoices button" onclick="resetToBasicAdjusts()" style="font-size:1em;border:1px solid white">預設</div>
+						</div>
+					</div>
+					<div class="choices">
+						<fieldset>
+						  <legend>盒聽</legend>
+						<div class="settingChoices">
+							<input id="lessThanZeroThanEnd" type="radio" name="ptRequiredToContinue" onclick = "setScoreRequiredToContinue(1)">0點結束
+						</div>
+						<div class="settingChoices">
+							<input id="ifNegativeThenEnd" type="radio" name="ptRequiredToContinue" onclick = "setScoreRequiredToContinue(0)" checked>0點繼續 負點飛
+						</div>
+						<div class="settingChoices">
+							<input id="noEarlyEnd" type="radio" name="ptRequiredToContinue" onclick = "setScoreRequiredToContinue(-1)">負點繼續
+						</div>
+						</fieldset>
+					</div>
+					<div class="choices">
+						連莊
+						<div class="settingChoices">
+							<input id="dealerRonToContinue" type="radio" name="isDealerWinContinue" onclick="setDealerWinContinue(1)" checked>聽牌連莊
+						</div>
+						<div class="settingChoices">
+							<input id="dealerListenToContinue" type="radio" name="isDealerWinContinue" onclick="setDealerWinContinue(0)">聽牌流莊
+						</div>
+						<div class="settingChoices">
+							<input id="dealerNoContinue" type="radio" name="isDealerWinContinue" onclick="setDealerWinContinue(-1)">不採用
+						</div>
+					</div>
+					<div class="choices">
+						<fieldset>
+						  <legend>尾莊TOP時..</legend>
+						<div class="settingChoices">
+							<input id="lastTopAnywaysEnd" type="radio" name="endEarlyIfLastTop" onclick="setLastDealerTopEndRule(1)" checked>強制結束
+						</div>
+						<div class="settingChoices">
+							<input id="lastTopRonEnd" type="radio" name="endEarlyIfLastTop" onclick="setLastDealerTopEndRule(0)">聽牌續行 和了結束
+						</div>
+						<div class="settingChoices">
+							<input id="noLastTopEarlyEnd" type="radio" name="endEarlyIfLastTop" onclick="setLastDealerTopEndRule(-1)">聽牌或和了都續行
+						</div>
+						</fieldset>
+					</div>
+					<div class="choices">
+						<div class="settingChoices">
+							<input id="nagashiManganTakePt" type="checkbox" onclick="setIsNagashiManganTakeTablePt(this)" class="chkbox">流滿獲得供託
+						</div>
+						<div class="settingChoices">
+							<input id="fourThirtyMangan" type="checkbox" onclick="setRoundUpMangan(this)" class="chkbox">4飜30符算滿貫
+						</div>
+					</div>
+					<div class="choices">
+						<fieldset>
+						  <legend>錯和相關設定</legend>
+							<div class="settingChoices">
+								子家錯和罰<input id="wrongRonPenaltyAmount" type="number" style="width:4em;height:1.5em;" value="8000" step="100" min="0" oninput = "setWrongRonPenaltyAmount(this.value)" onfocus="this.select()" onblur = "adjustWrongRonPenaltyAmount(this)">
+							</div>
+							<div class="settingChoices">
+								<input id="wrongRonCalcAfterGame" type="checkbox" onclick="setWrongRonCalcAfterGame(this)" class="chkbox">結束後再計算
+							</div>
+							<div class="settingChoices">
+								<input id="wrongRonReduceOnly" type="checkbox" onclick="setWrongRonReduceOnly(this)" class="chkbox">只扣分不補償他家
+							</div>
+							<div class="settingChoices">
+								<input id="wrongRonPenaltyFixed" type="checkbox" onclick="setWrongRonPenaltyFixed(this)" class="chkbox">罰固定值不論親子
+							</div>
+						 </fieldset>
+					</div>
+				</div>
+			</div>
+		</div>
+	<script src="script.js"></script>
+	</body>
+
+/* 感謝但不限於以下人員在開發上的協助, 因為你們的用心讓這支程式更完善, 謝謝！
+紫月(測試)、企鵝(回報bug、提功能建議)、伯夷(提供使用心得、提功能建議)、德林(測試、回報bug)
+*/

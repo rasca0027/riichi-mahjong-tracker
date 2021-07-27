@@ -1,0 +1,203 @@
+html, body {
+        font-family: 微軟正黑體, consolas, courier_new, verdana;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+        color:#bbb;
+        background-color: #222;
+}
+
+* {
+    -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+                    box-sizing: border-box;
+}
+
+
+@media all and (orientation:portrait) {
+        body {
+                font-size:6vw;
+        }
+}
+
+@media all and (orientation:landscape) {
+        body {
+                font-size:6vh;
+        }
+}
+
+div {
+        <!-- border:1px solid red; -->
+}
+
+tr, td {
+        <!-- border:1px solid green; -->
+}
+
+.selected {
+        border:3px solid cyan !important;
+}
+
+.table {
+        width:100%;
+        height:100%;
+        table-layout:fixed;
+}
+
+.button {
+        font-size:calc(24px+5vw);
+        margin:2px auto;
+        width:70%;
+        min-width:60px;
+        min-height:40px;
+        border:1px solid red;
+        text-align:center;
+        cursor:pointer;
+}
+
+.center {
+        display:flex;
+        align-items: center;
+        justify-content: center;
+}
+
+.player{
+        width:100%;
+        height:100%;
+}
+
+.container {
+        text-align:center;
+}
+
+.button:hover {
+        background-color:#099;
+        color:#222;
+}
+
+.choices {
+        width:90%;
+        color:#bbb;
+        font-size:1em;
+        margin: 0.5em auto; <!-- was 5vh auto -->
+        <!-- border: 1px solid blue; -->
+}
+
+.subchoices {
+        color:#bbb;
+        font-size:0.9em;
+        margin: 0.5em auto;
+        padding: 0 0.2em;
+        border: 1px solid green;
+        display:inline-block;
+        width:auto;
+}
+
+#mask1 {
+        top:0;
+        left:0;
+        z-index:10;
+}
+
+.fixed {
+        position:fixed;
+}
+
+.mask {
+        width:100%;
+        height:100%;
+        background-color:#222;
+        opacity:0.9;
+}
+
+.inline {
+        display:inline;
+}
+
+.score {
+        font-size:2em;
+}
+
+.scoreChange {
+        font-size:1.5em;
+}
+
+.hidden {
+        display:none;
+}
+
+strong, .strong {
+        color:#cddc39;
+}
+
+table {
+        width:100%;
+        height:100%;
+        text-align:center;
+}
+
+.dealer {
+        background-color:#8b008b;
+}
+
+.indicator {
+        font-size:1em;
+        display:inline-block;
+}
+
+.detail {
+        overflow:auto;
+        max-height:90%;
+}
+
+.detail td {
+        height:1.5em;
+        border:1px solid green;
+}
+
+input {
+        width:1em;
+        height:1em;
+        font-size:1em;
+}
+
+.setting {
+        height:100%;
+        overflow:auto;
+}
+
+#calcScorePanel {
+        height:100%;
+        overflow:auto;
+}
+
+.adjustFanFuAmount {
+        width:2em;
+        height:1.2em;
+        font-size:1em;
+}
+
+.selectWho {
+        font-size:1.5em;
+        width:1.5em;
+        height:1.5em;
+        margin: 0.1em 0.1em;
+}
+
+.enlarge {
+        padding:0.2em;
+}
+
+.settingChoices {
+        font-size:1em;
+        display:inline-block;
+        line-height:2em;
+}
+
+input[type="number"] {
+        text-align:right;
+}
+
+input[type="number"]:disabled {
+        background: #aaa;
+}
